@@ -1,81 +1,83 @@
 <div class="auth-container">
   <div *ngIf="!showSignUp" class="form-wrapper">    
     <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <h2>Connexion</h2>
       <div class="form-group">
-        <label for="login">Login</label>
+        <label for="login">Identifiant</label>
         <input
           type="text"
           id="login"
           formControlName="login"
-          placeholder="Enter your username"
+          placeholder="Entrez votre identifiant"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Mot de passe</label>
         <input
           type="password"
           id="password"
           formControlName="pass"
-          placeholder="Enter your password"
+          placeholder="Entrez votre mot de passe"
           required
         />
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
-      <button type="button" (click)="toggleForm()">Create Account</button>
+      <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+      <button type="button" (click)="toggleForm()">Créer un compte</button>
     </form>
   </div>
 
   <div *ngIf="showSignUp" class="form-wrapper">    
     <form (ngSubmit)="onSignUp()" [formGroup]="signUpForm">
+      <h2>Inscription</h2>
       <div class="form-group">
-        <label for="signup-nom">Last Name</label>
+        <label for="signup-nom">Nom</label>
         <input
           type="text"
           id="signup-nom"
           formControlName="nom"
-          placeholder="Enter your last name"
+          placeholder="Entrez votre nom"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="signup-prenom">First Name</label>
+        <label for="signup-prenom">Prénom</label>
         <input
           type="text"
           id="signup-prenom"
           formControlName="prenom"
-          placeholder="Enter your first name"
+          placeholder="Entrez votre prénom"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="signup-login">Login</label>
+        <label for="signup-login">Identifiant</label>
         <input
           type="text"
           id="signup-login"
           formControlName="login"
-          placeholder="Choose a username"
+          placeholder="Choisissez un identifiant"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="signup-password">Password</label>
+        <label for="signup-password">Mot de passe</label>
         <input
           type="password"
           id="signup-password"
           formControlName="pass"
-          placeholder="Create a password"
+          placeholder="Créez un mot de passe"
           required
         />
       </div>
 
-      <button type="submit" [disabled]="signUpForm.invalid">Sign Up</button>
-      <button type="button" (click)="toggleForm()">Back to Login</button>
+      <button type="submit" [disabled]="signUpForm.invalid">S'inscrire</button>
+      <button type="button" (click)="toggleForm()">Retour à la connexion</button>
     </form>
   </div>
 </div>

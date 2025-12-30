@@ -1,12 +1,12 @@
 <div id="app-container">
 	<header class="top-menu">
 		<div class="top-menu-inner">
-			<div class="site-title">Pollution Tracker</div>
+			<div class="site-title">Pollu-List</div>
 			<nav>
-				<a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+				<a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
 				<a routerLink="/pollutions" routerLinkActive="active">Pollutions</a>
-				<a routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn">Login</a>
-				<button *ngIf="loggedIn" (click)="logout()" class="logout-btn">Logout</button>
+				<a routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn">Connexion</a>
+				<button *ngIf="loggedIn" (click)="logout()" class="logout-btn">Déconnexion</button>
 				<div class="favorites-count">
 					<span class="fav-icon">♥</span>
 					<span class="fav-number">{{ favorisCount$ | async }}</span>
@@ -20,8 +20,8 @@
 		<div class="notification-content">
 			<span class="notification-icon">ℹ️</span>
 			<span class="notification-text">
-				You are not currently logged in. Some features may be restricted. 
-				<a routerLink="/login" class="login-link">Click here to login</a> or create an account.
+				Vous n'êtes pas actuellement connecté. Certaines fonctionnalités peuvent être limitées. 
+				<a routerLink="/login" class="login-link">Cliquez ici pour vous connecter</a> ou créer un compte.
 			</span>
 		</div>
 	</div>
@@ -33,20 +33,20 @@
 	<footer class="app-footer">
 		<div class="footer-content">
 			<div class="footer-section">
-				<h4>Pollution Tracker</h4>
-				<p>Monitor and track environmental pollution incidents worldwide.</p>
+				<h4>Pollu-List</h4>
+				<p>Surveillez et suivez les incidents de pollution environnementale dans le monde entier.</p>
 			</div>
 			<div class="footer-section">
-				<h4>Quick Links</h4>
+				<h4>Liens Rapides</h4>
 				<ul>
-					<li><a routerLink="/">Home</a></li>
+					<li><a routerLink="/">Accueil</a></li>
 					<li><a routerLink="/pollutions">Pollutions</a></li>
-					<li><a routerLink="/login">Login</a></li>
+					<li><a routerLink="/login">Connexion</a></li>
 				</ul>
 			</div>
 			<div class="footer-section">
-				<h4>About</h4>
-				<p>&copy; 2025 Pollution Tracker. All rights reserved.</p>
+				<h4>À Propos</h4>
+				<p>&copy; 2025 Pollu-List. Aucun droits réservés.</p>
 			</div>
 		</div>
 	</footer>
