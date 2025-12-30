@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
-import { PollutionDetailsComponent } from "./pollution-details/pollution-details.component";
-import { PollutionListComponent } from "./pollution-list/pollution-list.component";
 import { UserModule } from './user/user.module';
 import { UserServiceService } from './user-service.service';
 import { Store } from '@ngxs/store';
@@ -12,7 +10,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, PollutionDetailsComponent, PollutionListComponent, UserModule, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, UserModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true

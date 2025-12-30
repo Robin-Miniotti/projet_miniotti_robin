@@ -3,6 +3,7 @@
 		<div class="top-menu-inner">
 			<div class="site-title">Pollution Tracker</div>
 			<nav>
+				<a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
 				<a routerLink="/pollutions" routerLinkActive="active">Pollutions</a>
 				<a routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn">Login</a>
 				<button *ngIf="loggedIn" (click)="logout()" class="logout-btn">Logout</button>
@@ -28,4 +29,25 @@
 	<main>		
 		<router-outlet></router-outlet>
 	</main>
+
+	<footer class="app-footer">
+		<div class="footer-content">
+			<div class="footer-section">
+				<h4>Pollution Tracker</h4>
+				<p>Monitor and track environmental pollution incidents worldwide.</p>
+			</div>
+			<div class="footer-section">
+				<h4>Quick Links</h4>
+				<ul>
+					<li><a routerLink="/">Home</a></li>
+					<li><a routerLink="/pollutions">Pollutions</a></li>
+					<li><a routerLink="/login">Login</a></li>
+				</ul>
+			</div>
+			<div class="footer-section">
+				<h4>About</h4>
+				<p>&copy; 2025 Pollution Tracker. All rights reserved.</p>
+			</div>
+		</div>
+	</footer>
 </div>
