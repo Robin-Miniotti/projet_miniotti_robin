@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class AppComponent implements OnInit {
-  title = 'tp06';
+  title = 'Pollu-List';
   loggedIn = false;
   favorisCount$: Observable<number>;
 
