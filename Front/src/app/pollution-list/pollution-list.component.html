@@ -1,0 +1,109 @@
+<div class="pollution-container">
+  <h2>Liste des pollutions</h2>
+
+  <!-- Login reminder for certain actions -->
+  @if ((isLoggedIn$ | async) === false) {    
+  }
+
+  @if (isCreating === false) {
+    <div class="pollution-list">
+      <div class="search-container">
+        <form class="filter-form">
+          <div class="form-group">
+            <label for="titreSearch">Rechercher par titre:</label>
+            <input 
+              type="text"
+              id="titreSearch"
+              [(ngModel)]="titreSearch"
+              name="titreSearch"
+              placeholder="Entrez le titre"
+              class="search-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="typePollutionSearch">Filtrer par type:</label>
+            <select
+              id="typePollutionSearch"
+              [(ngModel)]="typePollutionSearch"
+              name="typePollutionSearch"
+              class="search-select"
+            >
+              <option value="">Tous les types</option>
+              @for (type of availableTypes; track type) {
+                <option [value]="type">
+                  {{ type }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-buttons">
+            <button type="button" (click)="filterPollutions()" class="filter-btn">
+              Filtrer
+            </button>
+            <button type="button" (click)="clearFilters()" class="clear-btn">
+              Effacer
+            </button>            
+          </div>
+        </form>        
+      </div>
+
+
+      <div class="create-pollution-section">        
+        <button 
+          (click)="startCreating()" 
+          class="details-btn">
+          Ajouter une pollution
+        </button>        
+      </div>
+      <div class="favorites-filter-section">
+        <button
+              type="button" 
+              (click)="toggleFavoritesFilter()" 
+              [class]="showOnlyFavorites ? 'favorites-filter-btn active' : 'favorites-filter-btn'"
+              [title]="showOnlyFavorites ? 'Afficher toutes les pollutions' : 'Afficher uniquement les favoris'">
+              {{ showOnlyFavorites ? '★ Favoris' : '☆ Favoris' }}
+              <span class="favorites-badge">{{ (favorisService.getFavorisCount() | async) || 0 }}</span>
+            </button>
+      </div>
+
+      <ul>
+        @for (pollution of pollutions$ | async; track pollution.id) {
+          <li>
+            <strong>{{ pollution.titre }}:</strong>
+            <img
+              [src]="pollution.photo_url"
+              alt="Photo de la pollution"
+              class="pollution-photo"
+            />
+            <div class="action-buttons">
+              <button [routerLink]="['/pollutions/details', pollution.id]" class="details-btn">Voir détails</button>
+              <button 
+                (click)="deletePollution(pollution.id)" 
+                class="delete-btn">
+                Supprimer
+              </button>
+              <button 
+                (click)="editPollution(pollution.id)" 
+                class="edit-btn">
+                Modifier
+              </button>
+              <button 
+                (click)="toggleFavorite(pollution)" 
+                [class]="isFavorite(pollution.id) ? 'favorite-btn favorite-active' : 'favorite-btn'"
+                [title]="isFavorite(pollution.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+                {{ isFavorite(pollution.id) ? '★' : '☆' }}
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if (isCreating) {
+    <div class="create-section">      
+      <app-pollution-create-form (pollutionCreated)="onPollutionCreated($event)"></app-pollution-create-form>
+    </div>
+  }
+</div>

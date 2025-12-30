@@ -1,0 +1,6 @@
+{
+  "root": "dist/tp06",
+  "routes": {
+    "/**": "index.html"
+  }
+}

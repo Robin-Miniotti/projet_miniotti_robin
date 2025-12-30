@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ngxs/storage-plugin": "^20.1.0",
+    "@ngxs/store": "^20.1.0"
+  }
+}

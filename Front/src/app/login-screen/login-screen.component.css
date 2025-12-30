@@ -1,0 +1,270 @@
+/* Container principal */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 20px;
+}
+
+/* Wrapper principal */
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+/* Conteneur de formulaire avec bordure gradient */
+.form-wrapper {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 3px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Formulaire intérieur blanc */
+form {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Titres */
+h2 {
+  margin: 0 0 25px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* Séparateur sous le titre */
+h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* Form groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+input:focus ~ label,
+.form-group:focus-within label {
+  color: #667eea;
+}
+
+input::placeholder {
+  color: #adb5bd;
+}
+
+/* Validation states */
+input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+input.ng-valid.ng-touched {
+  border-color: #28a745;
+}
+
+/* Buttons */
+form > button,
+form button[type="submit"],
+form button[type="button"] {
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button[type="submit"]:disabled {
+  background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* Toggle button (Create Account / Back to Login) */
+button[type="button"] {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: none;
+  margin-top: 5px;
+}
+
+button[type="button"]:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+button[type="button"]:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .auth-container {
+    max-width: 100%;
+  }
+
+  form {
+    padding: 30px 25px;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+  }
+
+  input {
+    padding: 11px 14px;
+  }
+
+  button {
+    padding: 12px 20px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+}
+
+/* Animation pour le switch entre forms */
+.form-wrapper {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Effet focus sur le container */
+form:focus-within {
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.05);
+  border-radius: 14px;
+}
+
+/* Style pour les messages d'erreur */
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: -5px;
+  display: block;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Amélioration du focus clavier pour l'accessibilité */
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Ajout d'un effet de survol subtil sur les inputs */
+input:hover:not(:focus) {
+  border-color: #b8c5d6;
+}
+
+/* Animation du bouton disabled */
+button[type="submit"]:disabled {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.5; }
+}

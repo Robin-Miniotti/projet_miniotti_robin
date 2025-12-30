@@ -1,0 +1,31 @@
+<div id="app-container">
+	<header class="top-menu">
+		<div class="top-menu-inner">
+			<div class="site-title">Pollution Tracker</div>
+			<nav>
+				<a routerLink="/pollutions" routerLinkActive="active">Pollutions</a>
+				<a routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn">Login</a>
+				<button *ngIf="loggedIn" (click)="logout()" class="logout-btn">Logout</button>
+				<div class="favorites-count">
+					<span class="fav-icon">♥</span>
+					<span class="fav-number">{{ favorisCount$ | async }}</span>
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Login notification banner -->
+	<div class="login-notification" *ngIf="!loggedIn">
+		<div class="notification-content">
+			<span class="notification-icon">ℹ️</span>
+			<span class="notification-text">
+				You are not currently logged in. Some features may be restricted. 
+				<a routerLink="/login" class="login-link">Click here to login</a> or create an account.
+			</span>
+		</div>
+	</div>
+
+	<main>		
+		<router-outlet></router-outlet>
+	</main>
+</div>

@@ -1,0 +1,40 @@
+<div class="pollution-details" *ngIf="pollution$ | async as pollution">
+  
+  <div class="details-header">
+  <h2>{{ pollution.titre }}</h2>
+  <span class="pollution-type-badge"> type: {{ pollution.type_pollution }}</span>
+  </div>
+
+  <div class="details-content">
+    
+    <div class="image-section">
+  <img [src]="pollution.photo_url" [alt]="pollution.titre" class="pollution-image-large" />
+    </div>
+
+    <div class="info-section">
+      
+      <div class="info-group">
+        <h3>📍 Localisation</h3>
+        <p>{{ pollution.location }}</p>
+        <div class="coordinates">
+          <span>Latitude: {{ pollution.latitude }}</span>
+          <span>Longitude: {{ pollution.longitude }}</span>
+        </div>
+      </div>
+
+      <div class="info-group">
+        <h3>📅 Date d'observation</h3>
+  <p>{{ formatDate(pollution.date_observation) }}</p>
+      </div>
+
+      <div class="info-group">
+        <h3>📝 Description</h3>
+        <p>{{ pollution.description }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="details-actions">
+    <a href="/pollutions" class="back-btn">← Retour à la liste</a>    
+</div>

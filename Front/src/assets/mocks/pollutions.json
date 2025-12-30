@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Pollution de l'air - Particules fines",
+    "pollutionType": "Air",
+    "description": "Concentration élevée de particules PM2.5 détectée dans le centre-ville due à la circulation intense et aux activités industrielles.",
+    "observationDate": "2024-10-20T10:30:00Z",
+    "location": "Paris 1er arrondissement",
+    "latitude": 48.8566,
+    "longitude": 2.3522,
+    "photoUrl": "assets/images/test.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Déversement chimique industriel",
+    "pollutionType": "Eau",
+    "description": "Fuite de produits chimiques industriels dans la rivière Seine, nécessitant une intervention d'urgence des services environnementaux.",
+    "observationDate": "2024-10-19T14:15:00Z",
+    "location": "Zone industrielle Nord - Gennevilliers",
+    "latitude": 48.9333,
+    "longitude": 2.2833,
+    "photoUrl": "assets/images/test.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Pollution sonore urbaine",
+    "pollutionType": "Autre",
+    "description": "Nuisances sonores dépassant les seuils autorisés (>65dB) causées par les travaux de construction et la circulation.",
+    "observationDate": "2024-10-18T22:00:00Z",
+    "location": "Quartier résidentiel Belleville",
+    "latitude": 48.8722,
+    "longitude": 2.3781,
+    "photoUrl": "assets/images/test.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Contamination des sols",
+    "pollutionType": "Chimique",
+    "description": "Présence de métaux lourds dans les sols d'un ancien site industriel, nécessitant une dépollution avant réaménagement.",
+    "observationDate": "2024-10-17T09:45:00Z",
+    "location": "Friche industrielle - Pantin",
+    "latitude": 48.8944,
+    "longitude": 2.4028,
+    "photoUrl": "assets/images/test.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Marée noire côtière",
+    "pollutionType": "Eau",
+    "description": "Déversement d'hydrocarbures sur la côte suite à un accident maritime, impact sur la faune et la flore marine.",
+    "observationDate": "2024-10-16T06:20:00Z",
+    "location": "Plage de Deauville",
+    "latitude": 49.3588,
+    "longitude": 0.0750,
+    "photoUrl": "assets/images/test.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Pollution lumineuse nocturne",
+    "pollutionType": "Autre",
+    "description": "Éclairage urbain excessif perturbant les cycles naturels de la faune et gaspillage énergétique important.",
+    "observationDate": "2024-10-15T23:30:00Z",
+    "location": "Centre commercial Vélizy 2",
+    "latitude": 48.7833,
+    "longitude": 2.2167,
+    "photoUrl": "assets/images/test.jpg"
+  }
+]

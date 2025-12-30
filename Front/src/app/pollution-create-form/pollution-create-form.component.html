@@ -1,0 +1,129 @@
+<form [formGroup]="pollutionForm" (ngSubmit)="onSubmit()" class="pollution-form">
+
+  <div class="form-group">
+    <label for="titre">Titre de la pollution</label>
+    <input
+      type="text"
+      id="titre"
+      formControlName="titre"
+      class="form-control"
+    />
+  @if (pollutionForm.get('titre')?.invalid && (pollutionForm.get('titre')?.touched || submitted)) {
+      <div class="error-message">
+        @if (pollutionForm.get('titre')?.errors?.['required']) {
+          <span>Ce champ est obligatoire.</span>
+        }
+        @if (pollutionForm.get('titre')?.errors?.['minlength']) {
+          <span>Le titre doit contenir au moins 5 caractères.</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      class="form-control"
+    ></textarea>
+  @if (pollutionForm.get('description')?.invalid && (pollutionForm.get('description')?.touched || submitted)) {
+      <div class="error-message">
+        <span>Ce champ est obligatoire.</span>
+      </div>
+    }
+  </div>
+
+    
+  <div class="form-group">
+    <label for="type_pollution">Type de pollution</label>
+    <select id="type_pollution" formControlName="type_pollution" class="form-control">
+      <option value="">Sélectionnez un type</option>
+      @for (type of availableTypes; track $index) {
+        <option [value]="type">{{ type }}</option>
+      }
+    </select>
+  @if (pollutionForm.get('type_pollution')?.invalid && (pollutionForm.get('type_pollution')?.touched || submitted)) {
+      <div class="error-message">
+        <span>Ce champ est obligatoire.</span>
+      </div>
+    }
+  </div>
+
+
+  <div class="form-group">
+    <label for="lieu">Lieu</label>
+    <input
+        type="text"
+        id="lieu"
+        formControlName="lieu"
+      class="form-control"      
+    />
+    @if (pollutionForm.get('lieu')?.invalid && (pollutionForm.get('lieu')?.touched || submitted)) {
+        <div class="error-message">
+            <span>Ce champ est obligatoire.</span>
+        </div>
+        }
+    </div>
+
+
+  <div class="form-group">
+    <label for="date_observation">Date de l'observation</label>
+    <input
+      type="date"
+      id="date_observation"
+      formControlName="date_observation"
+      class="form-control"
+    />
+  @if (pollutionForm.get('date_observation')?.invalid && (pollutionForm.get('date_observation')?.touched || submitted)) {
+      <div class="error-message">
+        <span>Ce champ est obligatoire.</span>
+      </div>
+    }
+  </div>
+    
+  <div class="form-group">
+    <label for="latitude">Latitude</label>
+    <input
+      type="text"
+      id="latitude"
+      formControlName="latitude"
+      class="form-control"
+    />
+  @if (pollutionForm.get('latitude')?.invalid && (pollutionForm.get('latitude')?.touched || submitted)) {
+      <div class="error-message">
+        <span>Ce champ est obligatoire.</span>
+      </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="longitude">Longitude</label>
+    <input
+      type="text"
+      id="longitude"
+      formControlName="longitude"
+      class="form-control"
+    />
+  @if (pollutionForm.get('longitude')?.invalid && (pollutionForm.get('longitude')?.touched || submitted)) {
+      <div class="error-message">
+        <span>Ce champ est obligatoire.</span>
+      </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="photo_url">URL de la photo</label>
+    <input
+      type="text"
+      id="photo_url"
+      formControlName="photo_url"
+      class="form-control"
+    />
+    <!-- image is optional, no error message -->
+  </div>
+
+
+  <button type="submit" id="create-button">Créer</button>
+  <button type="button" id="return-button" (click)="onReturn()">Retour</button>
+</form>

@@ -1,0 +1,81 @@
+<div class="auth-container">
+  <div *ngIf="!showSignUp" class="form-wrapper">    
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="login">Login</label>
+        <input
+          type="text"
+          id="login"
+          formControlName="login"
+          placeholder="Enter your username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="pass"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <button type="button" (click)="toggleForm()">Create Account</button>
+    </form>
+  </div>
+
+  <div *ngIf="showSignUp" class="form-wrapper">    
+    <form (ngSubmit)="onSignUp()" [formGroup]="signUpForm">
+      <div class="form-group">
+        <label for="signup-nom">Last Name</label>
+        <input
+          type="text"
+          id="signup-nom"
+          formControlName="nom"
+          placeholder="Enter your last name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="signup-prenom">First Name</label>
+        <input
+          type="text"
+          id="signup-prenom"
+          formControlName="prenom"
+          placeholder="Enter your first name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="signup-login">Login</label>
+        <input
+          type="text"
+          id="signup-login"
+          formControlName="login"
+          placeholder="Choose a username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="signup-password">Password</label>
+        <input
+          type="password"
+          id="signup-password"
+          formControlName="pass"
+          placeholder="Create a password"
+          required
+        />
+      </div>
+
+      <button type="submit" [disabled]="signUpForm.invalid">Sign Up</button>
+      <button type="button" (click)="toggleForm()">Back to Login</button>
+    </form>
+  </div>
+</div>
