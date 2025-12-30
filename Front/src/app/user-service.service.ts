@@ -33,7 +33,9 @@ export class UserServiceService {
 
   login(login: string, pass: string) {
     return this.http.post<any>(environment.apiUrl + "/utilisateur/login", { login, pass }).pipe(
-      tap((user) => {
+      tap((response) => {
+        // L'API retourne maintenant { message: string, user: User }
+        const user = response.user || response;
         // Stocker l'utilisateur dans le store NGXS
         this.store.dispatch(new AuthConnexion(user));
       })

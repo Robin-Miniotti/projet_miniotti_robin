@@ -1,7 +1,18 @@
 <div class="auth-container">
+  <!-- Success message -->
+  <div *ngIf="successMessage" class="success-message-banner">
+    {{ successMessage }}
+  </div>
+
   <div *ngIf="!showSignUp" class="form-wrapper">    
     <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
       <h2>Connexion</h2>
+
+      <!-- Login error message -->
+      <div *ngIf="loginErrorMessage" class="error-message-banner">
+        {{ loginErrorMessage }}
+      </div>
+
       <div class="form-group">
         <label for="login">Identifiant</label>
         <input
@@ -11,6 +22,10 @@
           placeholder="Entrez votre identifiant"
           required
         />
+        <div *ngIf="loginForm.get('login')?.invalid && loginForm.get('login')?.touched" class="field-error">
+          <span *ngIf="loginForm.get('login')?.errors?.['required']">L'identifiant est requis</span>
+          <span *ngIf="loginForm.get('login')?.errors?.['minlength']">L'identifiant doit contenir au moins 3 caractères</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -22,9 +37,12 @@
           placeholder="Entrez votre mot de passe"
           required
         />
+        <div *ngIf="loginForm.get('pass')?.invalid && loginForm.get('pass')?.touched" class="field-error">
+          <span *ngIf="loginForm.get('pass')?.errors?.['required']">Le mot de passe est requis</span>
+        </div>
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+      <button type="submit">Se connecter</button>
       <button type="button" (click)="toggleForm()">Créer un compte</button>
     </form>
   </div>
@@ -32,6 +50,12 @@
   <div *ngIf="showSignUp" class="form-wrapper">    
     <form (ngSubmit)="onSignUp()" [formGroup]="signUpForm">
       <h2>Inscription</h2>
+
+      <!-- Sign up error message -->
+      <div *ngIf="signUpErrorMessage" class="error-message-banner">
+        {{ signUpErrorMessage }}
+      </div>
+
       <div class="form-group">
         <label for="signup-nom">Nom</label>
         <input
@@ -41,6 +65,10 @@
           placeholder="Entrez votre nom"
           required
         />
+        <div *ngIf="signUpForm.get('nom')?.invalid && signUpForm.get('nom')?.touched" class="field-error">
+          <span *ngIf="signUpForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+          <span *ngIf="signUpForm.get('nom')?.errors?.['maxlength']">Le nom ne doit pas dépasser 50 caractères</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -52,6 +80,10 @@
           placeholder="Entrez votre prénom"
           required
         />
+        <div *ngIf="signUpForm.get('prenom')?.invalid && signUpForm.get('prenom')?.touched" class="field-error">
+          <span *ngIf="signUpForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
+          <span *ngIf="signUpForm.get('prenom')?.errors?.['maxlength']">Le prénom ne doit pas dépasser 50 caractères</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -60,9 +92,14 @@
           type="text"
           id="signup-login"
           formControlName="login"
-          placeholder="Choisissez un identifiant"
+          placeholder="Choisissez un identifiant (3-20 caractères)"
           required
         />
+        <div *ngIf="signUpForm.get('login')?.invalid && signUpForm.get('login')?.touched" class="field-error">
+          <span *ngIf="signUpForm.get('login')?.errors?.['required']">L'identifiant est requis</span>
+          <span *ngIf="signUpForm.get('login')?.errors?.['minlength']">L'identifiant doit contenir au moins 3 caractères</span>
+          <span *ngIf="signUpForm.get('login')?.errors?.['pattern']">L'identifiant ne doit contenir que des lettres et des chiffres</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -71,12 +108,23 @@
           type="password"
           id="signup-password"
           formControlName="pass"
-          placeholder="Créez un mot de passe"
+          placeholder="Min. 8 caractères dont 1 chiffre"
           required
         />
+        <div *ngIf="signUpForm.get('pass')?.touched" class="field-error">
+          <div *ngFor="let error of getPasswordErrors()">{{ error }}</div>
+        </div>
+        <div class="password-requirements">
+          <small>Le mot de passe doit contenir :</small>
+          <ul>
+            <li>Au minimum 8 caractères</li>
+            <li>Au moins 1 chiffre</li>
+            <li>Uniquement des lettres et des chiffres</li>
+          </ul>
+        </div>
       </div>
 
-      <button type="submit" [disabled]="signUpForm.invalid">S'inscrire</button>
+      <button type="submit">S'inscrire</button>
       <button type="button" (click)="toggleForm()">Retour à la connexion</button>
     </form>
   </div>
