@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, Subject } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap, startWith } from 'rxjs/operators';
 import { PollutionServiceService } from '../pollution-service.service';
 import { Pollution } from '../models/pollution';
 import { PollutionCreateFormComponent } from '../pollution-create-form/pollution-create-form.component';
@@ -18,7 +18,7 @@ import { UserServiceService } from '../user-service.service';
   providers: [PollutionServiceService],
   standalone: true
 })  
-export class PollutionListComponent implements OnInit {
+export class PollutionListComponent implements OnInit, OnDestroy {
 
   pollutions$: Observable<Pollution[]>;  
   titreSearch: string = '';
@@ -28,6 +28,11 @@ export class PollutionListComponent implements OnInit {
   showOnlyFavorites: boolean = false;
   isLoggedIn$: Observable<boolean>;
   private isLoggedIn: boolean = false;
+  
+  // Subjects for dynamic search
+  private titreSearchSubject = new Subject<string>();
+  private typeSearchSubject = new Subject<string>();
+  private favoritesFilterSubject = new Subject<boolean>();
 
   constructor(
     private pollutionService: PollutionServiceService, 
@@ -37,13 +42,72 @@ export class PollutionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.pollutions$ = this.pollutionService.getPollutions();
     this.isLoggedIn$ = this.userService.isLoggedIn();
     
     // Subscribe to login status
     this.userService.isLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
     });
+    
+    // Setup dynamic search with debounce
+    const titreSearch$ = this.titreSearchSubject.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged()
+    );
+    
+    const typeSearch$ = this.typeSearchSubject.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged()
+    );
+    
+    const favoritesFilter$ = this.favoritesFilterSubject.pipe(
+      startWith(false)
+    );
+    
+    // Combine all search criteria
+    this.pollutions$ = combineLatest([titreSearch$, typeSearch$, favoritesFilter$]).pipe(
+      switchMap(([titre, type, showFavorites]) => {
+        // Get base pollutions
+        let basePollutions$: Observable<Pollution[]>;
+        
+        if (titre.trim() === '' && type === '') {
+          basePollutions$ = this.pollutionService.getPollutions();
+        } else {
+          basePollutions$ = this.pollutionService.getPollutionsBy(type, titre);
+        }
+        
+        // Apply favorites filter if enabled
+        if (showFavorites) {
+          const favoris$ = this.favorisService.getFavoris();
+          return combineLatest([basePollutions$, favoris$]).pipe(
+            map(([allPollutions, favoritesList]) => {
+              const favoriteIds = new Set(favoritesList.map(p => p.id));
+              return allPollutions.filter(pollution => favoriteIds.has(pollution.id));
+            })
+          );
+        } else {
+          return basePollutions$;
+        }
+      })
+    );
+  }
+  
+  ngOnDestroy(): void {
+    // Clean up subjects
+    this.titreSearchSubject.complete();
+    this.typeSearchSubject.complete();
+    this.favoritesFilterSubject.complete();
+  }
+  
+  // Called when user types in search fields
+  onTitreSearchChange(): void {
+    this.titreSearchSubject.next(this.titreSearch);
+  }
+  
+  onTypeSearchChange(): void {
+    this.typeSearchSubject.next(this.typePollutionSearch);
   }
 
   deletePollution(id: number): void {
@@ -54,7 +118,8 @@ export class PollutionListComponent implements OnInit {
     }
     
     this.pollutionService.deletePollution(id).subscribe(() => {
-      this.pollutions$ = this.pollutionService.getPollutions();
+      // Trigger a refresh by re-emitting current search values
+      this.titreSearchSubject.next(this.titreSearch);
     });
   }
 
@@ -65,49 +130,29 @@ export class PollutionListComponent implements OnInit {
   // hideDetails removed, navigation now handles details view
 
   TitleSearch(): void {
-    if (this.titreSearch.trim() === '') {      
-      this.pollutions$ = this.pollutionService.getPollutions();
-    } else {      
-      this.pollutions$ = this.pollutionService.getPollutionsBy('', this.titreSearch);
-      console.log(this.pollutions$);
-    }
+    // Deprecated - now using dynamic search
+    this.onTitreSearchChange();
   }
 
   filterPollutions(): void {
-    // Get base pollutions first
-    let basePollutions$: Observable<Pollution[]>;
-    
-    if (this.titreSearch.trim() === '' && this.typePollutionSearch === '') {
-      basePollutions$ = this.pollutionService.getPollutions();
-    } else {
-      basePollutions$ = this.pollutionService.getPollutionsBy(this.typePollutionSearch, this.titreSearch);
-    }
-    
-    // Apply favorites filter if enabled
-    if (this.showOnlyFavorites) {
-      const favoris$ = this.favorisService.getFavoris();
-      this.pollutions$ = combineLatest([basePollutions$, favoris$]).pipe(
-        map(([allPollutions, favoritesList]) => {
-          const favoriteIds = new Set(favoritesList.map(p => p.id));
-          return allPollutions.filter(pollution => favoriteIds.has(pollution.id));
-        })
-      );
-    } else {
-      this.pollutions$ = basePollutions$;
-    }
+    // Trigger search with current values
+    this.titreSearchSubject.next(this.titreSearch);
+    this.typeSearchSubject.next(this.typePollutionSearch);
   }
 
   clearFilters(): void {
     this.titreSearch = '';
     this.typePollutionSearch = '';
     this.showOnlyFavorites = false;
-    this.pollutions$ = this.pollutionService.getPollutions();
+    this.titreSearchSubject.next('');
+    this.typeSearchSubject.next('');
+    this.favoritesFilterSubject.next(false);
   }
 
   // Toggle the favorites filter
   toggleFavoritesFilter(): void {
     this.showOnlyFavorites = !this.showOnlyFavorites;
-    this.filterPollutions();
+    this.favoritesFilterSubject.next(this.showOnlyFavorites);
   }  
 
   editPollution(pollutionId: number): void {
@@ -133,7 +178,8 @@ export class PollutionListComponent implements OnInit {
 
   onPollutionCreated($event: Event) {
     this.isCreating = false;
-    this.pollutions$ = this.pollutionService.getPollutions();
+    // Trigger refresh with current search values
+    this.titreSearchSubject.next(this.titreSearch);
   }
 
   // Check if a pollution is in favorites

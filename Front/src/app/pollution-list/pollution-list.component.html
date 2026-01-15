@@ -15,6 +15,7 @@
               type="text"
               id="titreSearch"
               [(ngModel)]="titreSearch"
+              (ngModelChange)="onTitreSearchChange()"
               name="titreSearch"
               placeholder="Entrez le titre"
               class="search-input"
@@ -26,6 +27,7 @@
             <select
               id="typePollutionSearch"
               [(ngModel)]="typePollutionSearch"
+              (ngModelChange)="onTypeSearchChange()"
               name="typePollutionSearch"
               class="search-select"
             >
@@ -39,11 +41,8 @@
           </div>
 
           <div class="form-buttons">
-            <button type="button" (click)="filterPollutions()" class="filter-btn">
-              Filtrer
-            </button>
             <button type="button" (click)="clearFilters()" class="clear-btn">
-              Effacer
+              Effacer les filtres
             </button>            
           </div>
         </form>        
