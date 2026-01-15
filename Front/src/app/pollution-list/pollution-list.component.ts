@@ -57,8 +57,7 @@ export class PollutionListComponent implements OnInit, OnDestroy {
     );
     
     const typeSearch$ = this.typeSearchSubject.pipe(
-      startWith(''),
-      debounceTime(300),
+      startWith(''),      
       distinctUntilChanged()
     );
     
