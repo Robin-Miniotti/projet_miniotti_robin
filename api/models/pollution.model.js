@@ -10,6 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
+    discoveredBy: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     lieu: {
       type: Sequelize.STRING,
       allowNull: false
@@ -35,6 +39,14 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false
     },
     photo_url: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    photo_base_64: {
+      type: Sequelize.TEXT,
+      allowNull: true
+    },
+    photo_mime_type: {
       type: Sequelize.STRING,
       allowNull: true
     }

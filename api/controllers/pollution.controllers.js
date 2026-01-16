@@ -49,6 +49,7 @@ exports.create = async (req, res) => {
     const pollution = {
         id: await getNewId(),
         titre: req.body.titre,
+        discoveredBy: req.body.discoveredBy,
         lieu: req.body.lieu,
         date_observation: req.body.date_observation,
         type_pollution: req.body.type_pollution,
@@ -56,6 +57,8 @@ exports.create = async (req, res) => {
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         photo_url: req.body.photo_url ?? null,
+        photo_base_64: req.body.photo_base_64 ?? null,
+        photo_mime_type: req.body.photo_mime_type ?? null,
     };
 
     Pollution.create(pollution)
@@ -129,6 +132,10 @@ function validatePollution(data) {
 
   if (!data.titre) {
     return { message: 'Le champ "titre" est requis.' };
+  }
+
+  if (!data.discoveredBy) {
+    return { message: 'Le champ "discoveredBy" est requis.' };
   }
 
   if (!data.lieu) {
