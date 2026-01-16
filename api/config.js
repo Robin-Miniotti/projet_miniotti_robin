@@ -3,11 +3,11 @@
 module.exports = {
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || 'EMMA123',
     BDD : {
-        "host" : process.env.DB_HOST || "dpg-d53a2dm3jp1c738gm0dg-a.oregon-postgres.render.com",
+        "host" : process.env.DB_HOST || "dpg-d5l2erkoud1c73e42h8g-a.oregon-postgres.render.com",
         "port" : process.env.DB_PORT || "5432",
-        "user" : process.env.DB_USER || "pollutions_user",
-        "password" : process.env.DB_PASSWORD || "9NXBmKvgkUjbdUSaDIlkQjnIFqmTyBmb",
-        "bdname" : process.env.DB_NAME || "pollutions_wxfb"
+        "user" : process.env.DB_USER || "pollution_user",
+        "password" : process.env.DB_PASSWORD || "gfJGpqCT5au2IBfrVzsPk3D5mx20wEOF",
+        "bdname" : process.env.DB_NAME || "pollutions_wej6"
     }
 }
 
