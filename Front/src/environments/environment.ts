@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://apitemplate-latest-c47a.onrender.com/api'
+    apiUrl: 'https://pollution-api.onrender.com/api'
 };
