@@ -8,4 +8,5 @@ export class Pollution {
     latitude:number;
     longitude:number;
     photo_url:string;
+    discovered_by:string;
 }

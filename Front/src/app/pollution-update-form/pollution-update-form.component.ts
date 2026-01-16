@@ -28,6 +28,7 @@ export class PollutionUpdateFormComponent {
       latitude: ['', Validators.required],
       longitude: ['', Validators.required],
       date_observation: ['', Validators.required],
+      discovered_by: [''],
       photo_url: [''] // image is optional
     });
   }
