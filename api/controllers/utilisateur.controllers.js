@@ -51,12 +51,9 @@ exports.login = (req, res) => {
         // Générer le token JWT
         const accessToken = generateAccessToken(user);
         
-        // Retourner le token dans le header Authorization ET dans le body
+        // Retourner le token dans le header Authorization
         res.setHeader('Authorization', `Bearer ${accessToken}`);
-        return res.status(200).send({ 
-          ...user, 
-          accessToken: accessToken 
-        });
+        return res.status(200).send(user);
       } else {
         return res.status(401).send({ message: 'Mot de passe incorrect' });
       }

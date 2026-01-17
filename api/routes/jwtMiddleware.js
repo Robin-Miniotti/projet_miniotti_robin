@@ -11,7 +11,6 @@ module.exports = {
     try {
         // Verify the payload fields
         let jwtBearer = token.split(' ')[1];
-        console.log ("Authorization: " + jwtBearer);
         jwtPayload = jwt.verify(jwtBearer, ACCESS_TOKEN_SECRET ,
         {
           complete: true,
@@ -24,7 +23,6 @@ module.exports = {
         // Add the payload to the request so controllers may access it.
         req.token = jwtPayload;
     } catch (error) {
-       console.log (error);
         res.status(401)
             .type('json')
             .send(JSON.stringify({ message: 'Missing or invalid token' }));
