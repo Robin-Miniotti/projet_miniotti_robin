@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, BehaviorSubject, of } from 'rxjs';
 import { Pollution } from './models/pollution';
+import { PollutionResponse } from './models/api-responses';
 import { environment } from '../environments/environment';
 
 
@@ -29,19 +30,19 @@ export class PollutionServiceService {
     if (environment.apiUrl.includes('.json')) {
       return this.pollutions$;
     }
-    return this.http.get<any[]>(environment.apiUrl+"/pollution").pipe(
+    return this.http.get<PollutionResponse[]>(environment.apiUrl+"/pollution").pipe(
       map(data => data.map(item => Object.assign(new Pollution(), item)))
     );
   }
 
    public addPollution(pollution: Pollution) {
-    return this.http.post<any>(environment.apiUrl+"/pollution", pollution).pipe(
+    return this.http.post<PollutionResponse>(environment.apiUrl+"/pollution", pollution).pipe(
       map(data => Object.assign(new Pollution(), data))
     );
   }
 
   updatePollution(id: number, pollution: Partial<Pollution>): Observable<Pollution> {
-    return this.http.put<any>(`${environment.apiUrl}/pollution/${id}`, pollution).pipe(
+    return this.http.put<PollutionResponse>(`${environment.apiUrl}/pollution/${id}`, pollution).pipe(
       map(data => Object.assign(new Pollution(), data))
     );
   }
@@ -58,7 +59,7 @@ export class PollutionServiceService {
         })
       );
     }
-    return this.http.get<any>(`${environment.apiUrl}/pollution/${id}`).pipe(
+    return this.http.get<PollutionResponse>(`${environment.apiUrl}/pollution/${id}`).pipe(
       map(data => Object.assign(new Pollution(), data))
     );
   }

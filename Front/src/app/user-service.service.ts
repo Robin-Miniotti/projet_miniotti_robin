@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { User } from './models/user';
+import { LoginResponse, DeleteResponse } from './models/api-responses';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
@@ -28,12 +29,12 @@ export class UserServiceService {
     return this.http.post<User>(environment.apiUrl + "/utilisateur", user);
   }
 
-  deleteUser(id: number) {
-    return this.http.delete<any>(environment.apiUrl + "/utilisateur/" + id);
+  deleteUser(id: number): Observable<DeleteResponse> {
+    return this.http.delete<DeleteResponse>(environment.apiUrl + "/utilisateur/" + id);
   }
 
-  login(login: string, pass: string) {
-    return this.http.post<any>(environment.apiUrl + "/utilisateur/login", { login, pass }, { observe: 'response' }).pipe(
+  login(login: string, pass: string): Observable<HttpResponse<LoginResponse>> {
+    return this.http.post<LoginResponse>(environment.apiUrl + "/utilisateur/login", { login, pass }, { observe: 'response' }).pipe(
       tap((response) => {
         // Récupérer le token depuis le header Authorization
         const authHeader = response.headers.get('Authorization');
@@ -48,8 +49,10 @@ export class UserServiceService {
         // L'API retourne le user dans le body
         const user = response.body;
         
-        // Stocker l'utilisateur dans le store NGXS
-        this.store.dispatch(new AuthConnexion(user));
+        // Stocker l'utilisateur dans le store NGXS si présent
+        if (user) {
+          this.store.dispatch(new AuthConnexion(user));
+        }
       })
     );
   }

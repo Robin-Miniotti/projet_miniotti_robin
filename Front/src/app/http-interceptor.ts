@@ -11,10 +11,10 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   
   constructor(private store: Store) {}
   
-  intercept(
-    req: HttpRequest<any>,
+  intercept<T>(
+    req: HttpRequest<T>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<T>> {
 
     // Récupérer le token depuis le store NGXS
     let jwtToken = this.store.selectSnapshot(AccesTokenState.getAccessToken);
@@ -33,7 +33,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
 
     // Traiter la réponse pour extraire le token du header
     return next.handle(req).pipe(
-      tap((evt: HttpEvent<any>) => {
+      tap((evt: HttpEvent<T>) => {
         if (evt instanceof HttpResponse) {
           let enteteAuthorization = evt.headers.get('Authorization');
           
