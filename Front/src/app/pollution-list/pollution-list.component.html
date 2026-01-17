@@ -71,11 +71,13 @@
         @for (pollution of pollutions$ | async; track pollution.id) {
           <li>
             <strong>{{ pollution.titre }}:</strong>
-            <img
-              [src]="pollution.photo_url"
-              alt="Photo de la pollution"
-              class="pollution-photo"
-            />
+            @if (pollution.getPhotoUrl()) {
+              <img
+                [src]="pollution.getPhotoUrl()"
+                alt="Photo de la pollution"
+                class="pollution-photo"
+              />
+            }
             <div class="action-buttons">
               <button [routerLink]="['/pollutions/details', pollution.id]" class="details-btn">Voir détails</button>
               <button 

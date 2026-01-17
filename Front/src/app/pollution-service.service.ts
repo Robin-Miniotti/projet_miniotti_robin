@@ -29,15 +29,21 @@ export class PollutionServiceService {
     if (environment.apiUrl.includes('.json')) {
       return this.pollutions$;
     }
-    return this.http.get<Pollution[]>(environment.apiUrl+"/pollution");
+    return this.http.get<any[]>(environment.apiUrl+"/pollution").pipe(
+      map(data => data.map(item => Object.assign(new Pollution(), item)))
+    );
   }
 
    public addPollution(pollution: Pollution) {
-    return this.http.post<Pollution>(environment.apiUrl+"/pollution", pollution);
+    return this.http.post<any>(environment.apiUrl+"/pollution", pollution).pipe(
+      map(data => Object.assign(new Pollution(), data))
+    );
   }
 
   updatePollution(id: number, pollution: Partial<Pollution>): Observable<Pollution> {
-    return this.http.put<Pollution>(`${environment.apiUrl}/pollution/${id}`, pollution);
+    return this.http.put<any>(`${environment.apiUrl}/pollution/${id}`, pollution).pipe(
+      map(data => Object.assign(new Pollution(), data))
+    );
   }
  
   getPollutionById(id: number): Observable<Pollution> {
@@ -52,7 +58,9 @@ export class PollutionServiceService {
         })
       );
     }
-    return this.http.get<Pollution>(`${environment.apiUrl}/pollution/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/pollution/${id}`).pipe(
+      map(data => Object.assign(new Pollution(), data))
+    );
   }
 
   deletePollution(id: number): Observable<void> {

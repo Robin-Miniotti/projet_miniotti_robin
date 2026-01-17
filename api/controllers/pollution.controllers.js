@@ -10,7 +10,15 @@ exports.get = async (req, res) => {
 
      try {
          const data = await Pollution.findAll();
-         res.send(data);
+         // Construire photo_url à partir de photo_base_64 et photo_mime_type
+         const pollutions = data.map(pollution => {
+             const pollutionData = pollution.toJSON();
+             if (pollutionData.photo_base_64 && pollutionData.photo_mime_type) {
+                 pollutionData.photo_url = `data:${pollutionData.photo_mime_type};base64,${pollutionData.photo_base_64}`;
+             }
+             return pollutionData;
+         });
+         res.send(pollutions);
      } catch (err) {
          res.status(400).send({
              message: err.message
@@ -25,7 +33,14 @@ exports.getById = async (req, res) => {
   try {
     const data = await Pollution.findByPk(id);
     if (!data) return res.status(404).send({ message: 'Not found' });
-    res.send(data);
+    
+    // Construire photo_url à partir de photo_base_64 et photo_mime_type
+    const pollutionData = data.toJSON();
+    if (pollutionData.photo_base_64 && pollutionData.photo_mime_type) {
+        pollutionData.photo_url = `data:${pollutionData.photo_mime_type};base64,${pollutionData.photo_base_64}`;
+    }
+    
+    res.send(pollutionData);
   } catch (err) {
     res.status(500).send({ message: err.message });
   }

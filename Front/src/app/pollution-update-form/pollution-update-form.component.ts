@@ -16,7 +16,9 @@ export class PollutionUpdateFormComponent {
   submitted = false;
   pollutionForm: FormGroup;
   availableTypes: string[] = ['Air', 'Eau', 'Chimique', 'Autre', 'Plastique','Depots sauvages'];
-  pollutionId: number = -1; 
+  pollutionId: number = -1;
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private pollutionService: PollutionServiceService) {
     this.pollutionForm = this.fb.group({
@@ -28,7 +30,58 @@ export class PollutionUpdateFormComponent {
       longitude: ['', Validators.required],
       date_observation: ['', Validators.required],
       discoveredBy: [''],
-      photo_url: [''] // image is optional
+      photo_base_64: [''],
+      photo_mime_type: ['']
+    });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      
+      // Vérifier le type de fichier
+      if (!file.type.startsWith('image/')) {
+        alert('Veuillez sélectionner une image valide');
+        return;
+      }
+      
+      // Vérifier la taille (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('L\'image ne doit pas dépasser 5 MB');
+        return;
+      }
+      
+      this.selectedFile = file;
+      
+      // Créer une prévisualisation
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.imagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+      
+      // Convertir en base64 pour l'envoi
+      const base64Reader = new FileReader();
+      base64Reader.onload = (e: ProgressEvent<FileReader>) => {
+        const base64String = e.target?.result as string;
+        // Extraire seulement la partie base64 (sans le préfixe data:image/...)
+        const base64Data = base64String.split(',')[1];
+        this.pollutionForm.patchValue({
+          photo_base_64: base64Data,
+          photo_mime_type: file.type
+        });
+      };
+      base64Reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(): void {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    this.pollutionForm.patchValue({
+      photo_base_64: '',
+      photo_mime_type: ''
     });
   }
 
