@@ -116,10 +116,18 @@ export class PollutionListComponent implements OnInit, OnDestroy {
       return;
     }
     
-    this.pollutionService.deletePollution(id).subscribe(() => {
-      // Trigger a refresh by re-emitting current search values
-      this.titreSearchSubject.next(this.titreSearch);
-    });
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette pollution ?')) {
+      this.pollutionService.deletePollution(id).subscribe({
+        next: () => {
+          // Trigger a refresh by re-emitting current search values
+          this.titreSearchSubject.next(this.titreSearch);
+          this.typeSearchSubject.next(this.typePollutionSearch);
+        },
+        error: (err) => {
+          alert('Erreur lors de la suppression: ' + (err.error?.message || err.message));
+        }
+      });
+    }
   }
 
   showDetails(pollutionId: number): void {

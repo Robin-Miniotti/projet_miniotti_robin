@@ -77,8 +77,8 @@ export class PollutionServiceService {
   getPollutionsBy(PollutionType: string, PollutionTitle:string): Observable<Pollution[]> {
     return this.getPollutions().pipe(
       map(pollutions => pollutions.filter(p =>
-        p.titre.includes(PollutionTitle) &&
-        (PollutionType === '' || p.type_pollution === PollutionType)
+        p.titre.toLowerCase().includes(PollutionTitle.toLowerCase()) &&
+        (PollutionType === '' || p.type_pollution.toLowerCase() === PollutionType.toLowerCase())
       ))
     );
   }
