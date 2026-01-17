@@ -89,16 +89,6 @@ export class LoginScreenComponent implements OnInit {
 
       this.userService.login(login, pass).subscribe({
         next: (response) => {
-          // Handle successful login
-          console.log('Login successful:', response);
-          
-          // Debug: Check if token is in store after a small delay
-          setTimeout(() => {
-            const token = this.store.selectSnapshot(AccesTokenState.getAccessToken);
-            console.log('🔍 DEBUG - Token dans le store après login:', token);
-            console.log('🔍 DEBUG - LocalStorage:', localStorage.getItem('@@STATE'));
-          }, 100);
-          
           this.successMessage = 'Connexion réussie ! Redirection...';
           // Redirect to pollution list after a short delay
           setTimeout(() => {
@@ -106,8 +96,6 @@ export class LoginScreenComponent implements OnInit {
           }, 1000);
         },
         error: (error) => {
-          // Handle login error
-          console.error('Login failed:', error);
           if (error.status === 404 || error.status === 401) {
             this.loginErrorMessage = 'Identifiant ou mot de passe incorrect';
           } else if (error.error && error.error.message) {
@@ -130,8 +118,6 @@ export class LoginScreenComponent implements OnInit {
     if (this.signUpForm.valid) {
       this.userService.addUser(this.signUpForm.value as User).subscribe({
         next: (response) => {
-          // Handle successful sign-up
-          console.log('Sign-up successful:', response);
           this.successMessage = 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
           // Switch to login form after a short delay
           setTimeout(() => {
@@ -141,7 +127,6 @@ export class LoginScreenComponent implements OnInit {
           }, 2000);
         },
         error: (error) => {
-          console.error('Sign-up failed:', error);
           if (error.status === 409) {
             this.signUpErrorMessage = 'Ce nom d\'utilisateur existe déjà. Veuillez en choisir un autre.';
           } else if (error.error && error.error.message) {

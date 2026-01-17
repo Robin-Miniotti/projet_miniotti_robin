@@ -100,14 +100,11 @@ export class PollutionUpdateFormComponent {
   onSubmit() {
     this.submitted = true;
     if (this.pollutionForm.valid) {
-      console.log('Submitting update for ID:', this.pollutionId);
-      console.log('Form value:', this.pollutionForm.value);
       this.pollutionService.updatePollution(this.pollutionId, this.pollutionForm.value).subscribe({
         next: () => {
           this.returnToList();
         },
         error: (err) => {
-          console.error('Error updating pollution:', err);
           alert('Erreur lors de la mise à jour: ' + (err.error?.message || err.message));
         }
       });      
