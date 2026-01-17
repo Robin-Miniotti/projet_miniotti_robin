@@ -4,6 +4,8 @@ import { UserServiceService } from '../user-service.service';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngxs/store';
+import { AccesTokenState } from '../../shared/states/acces-token-state';
 
 // Custom validator for password
 function passwordValidator(control: AbstractControl): ValidationErrors | null {
@@ -36,7 +38,6 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login-screen.component.html',
   styleUrls: ['./login-screen.component.css'],
-  providers: [UserServiceService],
   standalone: true
 })
 export class LoginScreenComponent implements OnInit {
@@ -50,7 +51,8 @@ export class LoginScreenComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserServiceService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +91,14 @@ export class LoginScreenComponent implements OnInit {
         next: (response) => {
           // Handle successful login
           console.log('Login successful:', response);
+          
+          // Debug: Check if token is in store after a small delay
+          setTimeout(() => {
+            const token = this.store.selectSnapshot(AccesTokenState.getAccessToken);
+            console.log('🔍 DEBUG - Token dans le store après login:', token);
+            console.log('🔍 DEBUG - LocalStorage:', localStorage.getItem('@@STATE'));
+          }, 100);
+          
           this.successMessage = 'Connexion réussie ! Redirection...';
           // Redirect to pollution list after a short delay
           setTimeout(() => {

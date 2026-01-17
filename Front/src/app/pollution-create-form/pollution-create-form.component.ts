@@ -10,7 +10,6 @@ import { PollutionServiceService } from '../pollution-service.service';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './pollution-create-form.component.html',
   styleUrls: ['./pollution-create-form.component.css'],
-  providers: [PollutionServiceService],
   standalone: true
 })
 export class PollutionCreateFormComponent {

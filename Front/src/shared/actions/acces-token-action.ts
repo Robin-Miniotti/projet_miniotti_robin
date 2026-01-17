@@ -1,7 +1,7 @@
 export class SetAccessToken {
   static readonly type = '[Auth] Set Access Token';
 
-  constructor(public accesToken: String) {}
+  constructor(public accesToken: string) {}
 }
 
 export class DeleteAccessToken {

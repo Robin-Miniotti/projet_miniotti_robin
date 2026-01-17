@@ -11,12 +11,13 @@ import { DeleteAccessToken, SetAccessToken } from '../actions/acces-token-action
 export class AccesTokenState {
 
   @Selector()
-  static getAccessToken(state: AccesTokenModel): String | undefined {
+  static getAccessToken(state: AccesTokenModel): string | undefined {
     return state.accessToken;
   }
 
   @Action(SetAccessToken)
   setAccessToken(ctx: StateContext<AccesTokenModel>, action: SetAccessToken) {
+    console.log('💾 NGXS - Storing token:', action.accesToken);
     ctx.patchState({ accessToken: action.accesToken });
   }
 

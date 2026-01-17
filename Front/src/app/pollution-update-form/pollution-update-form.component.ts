@@ -10,7 +10,6 @@ import { PollutionServiceService } from '../pollution-service.service';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './pollution-update-form.component.html',
   styleUrl: './pollution-update-form.component.css',
-  providers: [PollutionServiceService],
   standalone: true
 })
 export class PollutionUpdateFormComponent {
@@ -34,7 +33,7 @@ export class PollutionUpdateFormComponent {
   }
 
   ngOnInit(): void {
-    this.pollutionId = this.route.snapshot.params['id'];
+    this.pollutionId = Number(this.route.snapshot.params['id']);
     this.pollutionService.getPollutionById(this.pollutionId).subscribe(pollution => {
       this.pollutionForm.patchValue(pollution);
     });
@@ -48,8 +47,16 @@ export class PollutionUpdateFormComponent {
   onSubmit() {
     this.submitted = true;
     if (this.pollutionForm.valid) {
-      this.pollutionService.updatePollution(this.pollutionId, this.pollutionForm.value).subscribe(() => {
-        this.returnToList();
+      console.log('Submitting update for ID:', this.pollutionId);
+      console.log('Form value:', this.pollutionForm.value);
+      this.pollutionService.updatePollution(this.pollutionId, this.pollutionForm.value).subscribe({
+        next: () => {
+          this.returnToList();
+        },
+        error: (err) => {
+          console.error('Error updating pollution:', err);
+          alert('Erreur lors de la mise à jour: ' + (err.error?.message || err.message));
+        }
       });      
       this.submitted = false;
     }

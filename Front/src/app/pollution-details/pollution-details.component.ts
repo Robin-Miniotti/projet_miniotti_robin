@@ -11,7 +11,6 @@ import { ActivatedRoute } from '@angular/router';
   imports: [CommonModule],
   templateUrl: './pollution-details.component.html',
   styleUrls: ['./pollution-details.component.css'],
-  providers: [PollutionServiceService],
   standalone: true
 })
 export class PollutionDetailsComponent implements OnInit {

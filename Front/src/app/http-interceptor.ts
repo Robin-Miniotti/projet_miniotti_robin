@@ -8,7 +8,6 @@ import { AccesTokenState } from '../shared/states/acces-token-state';
 
 @Injectable()
 export class ApiHttpInterceptor implements HttpInterceptor {
-  jwtToken?: String = '';
   
   constructor(private store: Store) {}
   
@@ -17,33 +16,43 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    console.log('Interceptor - Token actuel:', this.jwtToken);
+    console.log('🚀 INTERCEPTOR APPELÉ pour:', req.url);
 
     // Récupérer le token depuis le store NGXS
-    this.jwtToken = this.store.selectSnapshot(AccesTokenState.getAccessToken);
+    let jwtToken = this.store.selectSnapshot(AccesTokenState.getAccessToken);
+    
+    // Convertir en string si nécessaire
+    if (jwtToken && typeof jwtToken === 'object') {
+      jwtToken = String(jwtToken);
+    }
+
+    console.log('🔑 Interceptor - Token actuel depuis le store:', jwtToken);
+    console.log('🔑 Interceptor - Type du token:', typeof jwtToken);
+    console.log('📤 Interceptor - URL de la requête:', req.url);
 
     // Si un token existe, l'ajouter au header Authorization
-    if (this.jwtToken && this.jwtToken !== '') {
+    if (jwtToken && jwtToken !== '' && jwtToken !== 'undefined') {
       req = req.clone({
-        setHeaders: { Authorization: `Bearer ${this.jwtToken}` },
+        setHeaders: { Authorization: `Bearer ${jwtToken}` },
       });
-      console.log('Bearer renvoyé : ' + this.jwtToken);
+      console.log('✅ Bearer ajouté à la requête : ' + jwtToken);
+    } else {
+      console.warn('⚠️ Pas de token à ajouter à la requête - Token value:', jwtToken);
     }
 
     // Traiter la réponse pour extraire le token du header
     return next.handle(req).pipe(
       tap((evt: HttpEvent<any>) => {
         if (evt instanceof HttpResponse) {
-          let tab: Array<String>;
           let enteteAuthorization = evt.headers.get('Authorization');
           
           if (enteteAuthorization != null) {
-            tab = enteteAuthorization.split(/Bearer\s+(.*)$/i);
-            if (tab.length > 1) {
-              this.jwtToken = tab[1];
-              console.log('Bearer récupéré : ' + this.jwtToken);
+            const parts = enteteAuthorization.split(/Bearer\s+(.*)$/i);
+            if (parts.length > 1) {
+              const newToken = parts[1];
+              console.log('Bearer récupéré du header : ' + newToken);
               // Stocker le token dans le store NGXS
-              this.store.dispatch(new SetAccessToken(this.jwtToken));
+              this.store.dispatch(new SetAccessToken(newToken));
             }
           }
         }

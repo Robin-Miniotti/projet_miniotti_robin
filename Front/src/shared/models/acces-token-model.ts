@@ -1,3 +1,3 @@
 export interface AccesTokenModel {
-  accessToken: String | undefined;
+  accessToken: string | undefined;
 }
